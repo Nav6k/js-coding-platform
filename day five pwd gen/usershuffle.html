@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random String Generator</title>
+</head>
+<body>
+    <div>
+        <label for="length">Enter the desired length of the output string:</label>
+        <input type="number" id="length" />
+        <br />
+        <label for="includeNumbers">Include numbers in the random string?</label>
+        <input type="checkbox" id="includeNumbers" />
+        <br />
+        <label for="includeSymbols">Include symbols in the random string?</label>
+        <input type="checkbox" id="includeSymbols" />
+        <br />
+        <label for="includeSmallAlphabets">Include small alphabets in the random string?</label>
+        <input type="checkbox" id="includeSmallAlphabets" />
+        <br />
+        <label for="includeAlphabets">Include alphabets in the random string?</label>
+        <input type="checkbox" id="includeAlphabets" />
+        <br />
+        <button onclick="generateRandomString()">Generate Random String</button>
+    </div>
+    <div id="output"></div>
+    <script>
+        function shuffleString(str) {
+            let shuffledStr = '';
+            while (str.length > 0) {
+                const randomIndex = Math.floor(Math.random() * str.length);
+                shuffledStr += str[randomIndex];
+                str = str.slice(0, randomIndex) + str.slice(randomIndex + 1);
+            }
+            return shuffledStr;
+        }
+
+        function generateRandomString() {
+            let desiredLength = parseInt(document.getElementById('length').value);
+            let includeNumbers = document.getElementById('includeNumbers').checked;
+            let includeSymbols = document.getElementById('includeSymbols').checked;
+            let includeSmallAlphabets = document.getElementById('includeSmallAlphabets').checked;
+            let includeAlphabets = document.getElementById('includeAlphabets').checked;
+            
+            let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+            let symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '-', '+'];
+            let smallalphabets = 'abcdefghijklmnopqrstuvwxyz';
+            let alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let validTypes = [];
+
+            if (includeNumbers) {
+                validTypes.push(0);
+            }
+
+            if (includeSymbols) {
+                validTypes.push(1);
+            }
+            
+            if (includeSmallAlphabets) {
+                validTypes.push(2);
+            } 
+
+            if (includeAlphabets) {
+                validTypes.push(3);
+            }
+
+            let res = '';
+
+            function getRandomElementFromArray(array) {
+                const randomIndex = Math.floor(Math.random() * array.length);
+                return array[randomIndex];
+            }
+
+            while (res.length < desiredLength) {
+                let randomType = validTypes[Math.floor(Math.random() * validTypes.length)];
+                switch (randomType) {
+                    case 0:
+                        res += getRandomElementFromArray(numbers);
+                        break;
+                    case 1:
+                        res += getRandomElementFromArray(symbols);
+                        break;
+                    case 2:
+                        res += getRandomElementFromArray(smallalphabets);
+                        break;
+                    case 3:
+                        res += getRandomElementFromArray(alphabets);
+                        break;
+                }
+            }
+
+            // Perform shuffling on the generated string
+            let shuffledRes = shuffleString(res);
+
+            // Display the shuffled output on the screen
+            document.getElementById('output').innerHTML = shuffledRes;
+        }
+    </script>
+</body>
+</html>

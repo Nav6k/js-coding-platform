@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Arrays for different types of inputs
+let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '-', '+'];
+let alphabets = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+let desiredLength = parseInt(prompt('Enter the desired length of the output string:'));
+let includeNumbers = confirm('Include numbers in the random string?');
+let includeSymbols = confirm('Include symbols in the random string?');
+let includeAlphabets = confirm('Include alphabets in the random string?');
+
+let res = '';
+
+// Function to get a random element from an array
+function getRandomElementFromArray(array) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
+}
+
+// Check if any type is included, and if yes, add it to the validTypes array
+let validTypes = [];
+
+if (includeNumbers) {
+    validTypes.push(numbers);
+}
+
+if (includeSymbols) {
+    validTypes.push(symbols);
+}
+
+if (includeAlphabets) {
+    validTypes.push(alphabets);
+}
+
+while (res.length < desiredLength) {
+    let randomType = validTypes[Math.floor(Math.random() * validTypes.length)];
+    // Get a random character from the chosen type (numbers, symbols, or alphabets)
+    res += getRandomElementFromArray(randomType);
+}
+
+console.log(res);
+
+    </script>
+</body>
+</html>

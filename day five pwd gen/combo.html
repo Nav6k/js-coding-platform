@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random String Generator</title>
+</head>
+<body>
+    <script>
+      let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '-', '+'];
+let alphabets = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+let desiredLength = parseInt(prompt('Enter the desired length of the output string:'));
+let includeNumbers = confirm('Include numbers in the random string?');
+let includeSymbols = confirm('Include symbols in the random string?');
+let includeAlphabets = confirm('Include alphabets in the random string?');
+
+let validTypes = [];
+
+if (includeNumbers) {
+    validTypes.push(0);
+}
+
+if (includeSymbols) {
+    validTypes.push(1);
+}
+
+if (includeAlphabets) {
+    validTypes.push(2);
+}
+
+let res = '';
+
+function getRandomElementFromArray(array) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
+}
+
+while (res.length < desiredLength) {
+    let randomType = validTypes[Math.floor(Math.random() * validTypes.length)];
+    switch (randomType) {
+        case 0:
+            res += getRandomElementFromArray(numbers);
+            break;
+        case 1:
+            res += getRandomElementFromArray(symbols);
+            break;
+        case 2:
+            res += getRandomElementFromArray(alphabets);
+            break;
+    }
+}
+
+console.log(res);
+  
+    </script>
+</body>
+</html>
