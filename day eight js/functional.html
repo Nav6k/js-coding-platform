@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background-color: black;
+            padding: 150px;
+            border: 1px solid black;
+            border-radius: 10px;
+            width: 687px;
+            height: 400px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .inner-box {
+            background-color: grey;
+            padding: 10px;
+            width: 600px;
+            border: 1px solid grey;
+            border-radius: 5px;
+            width: 310px;
+            height: 25px;
+            margin: 1px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .rectangular-box {
+            background-color: grey;
+            width: 310px;
+            height: 400px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox-content {
+            display: flex;
+            align-items: center;
+            
+        }
+
+        .checkbox-content input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .password-length {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="inner-box">
+            <p>Password Generator</p></p>
+        </div>
+        <div class="rectangular-box">
+            <label for="passwordLength" class="password-length">Password Length:</label>
+            <input type="range" id="passwordLength" name="passwordLength" min="6" max="20" value="12" oninput="updatePasswordLength()">
+            <span id="passwordLengthValue">12</span>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeUppercase">
+                <label for="includeUppercase"><b>Include Uppercase letter</b></label>
+            </div>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeLowercase">
+                <label for="includeLowercase"><b>Include lowercase letter</b></label>
+            </div>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeNumber">
+                <label for="includeNumber"><b>Include Number</b></label>
+            </div>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeSymbol">
+                <label for="includeSymbol"><b>Include Symbol</b></label>
+            </div>
+
+            <button type="button" id="generateButton" onclick="generatePassword()">Generate -></button>
+
+            <div id="output" class="password-output"></div>
+        </div>
+    </div>
+
+    <script>
+        // Utility function to shuffle a string
+        function shuffleString(str) {
+            return str.split('').sort(function() {return 0.5-Math.random()}).join('');
+        }
+
+        // Function to update the displayed password length
+        function updatePasswordLength() {
+            const passwordLength = document.getElementById('passwordLength').value;
+            document.getElementById('passwordLengthValue').innerText = passwordLength;
+        }
+
+        // Main function to generate and display the password
+        function generatePassword() {
+            let desiredLength = parseInt(document.getElementById('passwordLength').value);
+            let includeUppercase = document.getElementById('includeUppercase').checked;
+            let includeLowercase = document.getElementById('includeLowercase').checked;
+            let includeNumber = document.getElementById('includeNumber').checked;
+            let includeSymbol = document.getElementById('includeSymbol').checked;
+
+            // Define the character sets for generating the password
+            let uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            let numberChars = '0123456789';
+            let symbolChars = '!@#$%^&*()-+';
+
+            // Create a variable to store the possible characters to include in the password
+            let possibleChars = '';
+
+            // Add the selected character sets to the possible characters list
+            if (includeUppercase) {
+                possibleChars += uppercaseChars;
+            }
+
+            if (includeLowercase) {
+                possibleChars += lowercaseChars;
+            }
+
+            if (includeNumber) {
+                possibleChars += numberChars;
+            }
+
+            if (includeSymbol) {
+                possibleChars += symbolChars;
+            }
+
+            // If no character set is selected, show an error message
+            if (possibleChars === '') {
+                document.getElementById('output').innerText = 'Please select at least one character set.';
+                return;
+            }
+
+            // Generate the password
+            let generatedPassword = '';
+            for (let i = 0; i < desiredLength; i++) {
+                const randomIndex = Math.floor(Math.random() * possibleChars.length);
+                generatedPassword += possibleChars[randomIndex];
+            }
+
+            // Perform shuffling on the generated string
+            let shuffledPassword = shuffleString(generatedPassword);
+
+            // Display the shuffled output on the screen
+            document.getElementById('output').innerText = shuffledPassword;
+            
+        }
+
+        // Function to copy the generated password to the clipboard (not implemented here)
+        function copyToClipboard() {
+            // ... (implementation not provided in this code)
+        }
+
+        // Add an event listener to call generatePassword() when the button is clicked
+        document.getElementById('generateButton').addEventListener('click', generatePassword);
+    </script>
+</body>
+</html>
