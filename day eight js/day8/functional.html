@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+
+   <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background-color: rgba(7, 7, 7, 0.986);
+            padding: 90px;
+           
+            border: 1px solid black;
+            border-radius: 0px;
+            width: 687px;
+            height: 400px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            size: 22px;
+            color: rgb(148, 143, 143); /* Add this line to set the text color to white */
+           
+        }
+        
+        .inner-box {
+            background-color: rgb(37, 35, 35);
+            padding: 10px;
+            width: 600px;
+            color: white;
+            border-radius: 0px;
+            width: 310px;
+            height: 25px;
+            margin: 1px;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between; /* Move items to the right and left ends */
+            align-items: center; /* Center items vertically */
+        }
+        
+        .rectangular-box {
+            background-color: rgb(37, 35, 35);
+            width: 310px;
+            height: 400px;
+            border: 1px solid black;
+            border-radius: 0px;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: right;
+            text-align: right; /* Align the text to the right within the rectangular box */
+        }
+
+        .checkbox-content {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Hide the default checkbox */
+        .checkbox-content input[type="checkbox"] {
+            display: none;
+            padding: 3px;
+        }
+
+        /* Create a custom checkbox using a pseudo-element */
+        .checkbox-content label {
+            position: relative;
+            padding-left: 40px;
+            cursor: pointer;
+          
+        }
+
+        .checkbox-content label::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid white;/* Green border for the checkbox */
+            border-radius: 3px;
+        }
+
+        /* Style the tick mark when the checkbox is checked */
+        .checkbox-content input[type="checkbox"]:checked + label::before {
+            content: "\2713"; /* Unicode for a checkmark symbol */
+            font-size: 14px;
+            background-color:  rgb(20, 247, 96);
+             border: 2px solid  rgb(20, 247, 96);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+           
+        }
+
+
+        /* Update the width of the range input */
+       /* Update the width of the range input */
+       input[type="range"] {
+            width: 80%; /* Set the width to 80% to make it fill the available space */
+            background: linear-gradient(to right, rgb(20, 247, 96) 0%, rgb(20, 247, 96) var(--slider-value, passwordlength), black var(--slider-value, 0%), black 100%); /* Use a gradient background to achieve the green and black effect */
+            background-size: 100% 5px; /* Set the size of the background gradient */
+            background-repeat: no-repeat; /* Prevent the background from repeating */
+            background-position: 0 center; /* Position the background at the left */
+            appearance: none; /* Remove default styles */
+            height: 5px; /* Set the height of the slider track */
+            border-radius: 5px; /* Round the corners of the slider track */
+        }
+        /* Customize the appearance of the slider thumb (handle) */
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background-color: white; /* Set the color of the slider thumb (handle) */
+            border-radius: 50%; /* Create a circular shape for the slider thumb */
+            cursor: pointer;
+        }
+
+        .password-output {
+            margin-top: 10px; /* Add some margin between the content and the output */
+            text-align: center; /* Center the output text */
+            font-size: 20px; 
+        }
+
+        /* Change the color of the button to green */
+        #generateButton {
+            background-color:  rgb(20, 247, 96);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Change the color of the button when hovered */
+        #generateButton:hover {
+            background-color: darkgreen;
+            
+        }
+ 
+          .password-strength {
+        margin-top: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    
+    /* Customize the appearance of the password strength label based on strength */
+    .strength-box {
+        background-color: rgb(20, 20, 20);
+            margin-top: 30px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            
+        }
+
+        .strength-color {
+            width: 5px;
+            height: 20px;
+            margin: 2px;
+            border-radius: 0px;
+            border: 1px solid white;
+        }
+
+        .strength-color.low {
+           
+            background-color: red;
+        }
+
+        .strength-color.medium {
+            background-color: yellow;
+        }
+
+        .strength-color.high {
+            background-color: green;
+        }
+        
+
+        .copy-symbol {
+            cursor: pointer;
+            font-size: 18px;
+            color: white;
+        }
+
+        .output-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .password-length {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-start; /* Align the content to the left */
+            align-items: center; /* Center items vertically */
+        }
+    </style>
+
+</head>
+<body>
+   
+    <div class="box">
+        <p>Password Generator</p>
+        
+        <div class="inner-box">
+            <div class="password-length">
+                
+                <div id="output" class="password-output"></div>
+            </div>
+            <div class="output-container">
+                <div id="output" class="password-output"></div>
+                <span class="copy-symbol" id="copySymbol" onclick="copyToClipboard()">📋</span>
+            </div>
+        </div>
+        <div class="rectangular-box">
+            <label for="passwordLength" class="password-length">Character Length: <span id="passwordLengthValue">12</span></label>
+            <input type="range" id="passwordLength" name="passwordLength" min="0" max="20" value="12" oninput="updatePasswordLength()">
+            
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeUppercase">
+                <label for="includeUppercase">Include Uppercase Letter</label>
+            </div>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeLowercase">
+                <label for="includeLowercase">Include Lowercase Letter</label>
+            </div>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeNumber">
+                <label for="includeNumber">Include Number</label>
+            </div>
+            <div class="checkbox-content">
+                <input type="checkbox" id="includeSymbol">
+                <label for="includeSymbol">Include Symbol</label>
+            </div>
+            <div class="strength-box">
+                <div id="strengthLabel" class="password-strength"></div>
+                <div class="strength-color low"></div>
+                <div class="strength-color medium"></div>
+                <div class="strength-color high"></div>
+                
+            </div>
+            <div id="strengthLabel" class="password-strength"></div>
+            <button type="button" id="generateButton" onclick="generatePassword()">Generate -></button>
+        </div>
+    </div>
+    <script>
+
+        
+        // Utility function to shuffle a string
+        function shuffleString(str) {
+            return str.split('').sort(function() {return 0.5-Math.random()}).join('');
+        }
+
+        // Function to update the displayed password length
+        function updatePasswordLength() {
+            const passwordLength = document.getElementById('passwordLength').value;
+            document.getElementById('passwordLengthValue').innerText = passwordLength;
+            document.documentElement.style.setProperty('--slider-value', (passwordLength / 20) * 100 + '%');
+        }
+
+        // Function to evaluate the strength of the generated password
+        function evaluatePasswordStrength(password) {
+            const passwordLength = password.length;
+            let complexity = "low"; // Default strength
+
+            if (passwordLength >= 8) {
+                if (/[a-zA-Z]/.test(password) && /\d/.test(password) && /\W/.test(password)) {
+                    complexity = "high";
+                } else if (/[a-zA-Z]/.test(password) && /\d/.test(password)) {
+                    complexity = "medium";
+                }
+            }
+
+            return complexity;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = outputText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Password copied to clipboard!');
+        }
+
+        // Main function to generate and display the password
+        function generatePassword() {
+            let desiredLength = parseInt(document.getElementById('passwordLength').value);
+            let includeUppercase = document.getElementById('includeUppercase').checked;
+            let includeLowercase = document.getElementById('includeLowercase').checked;
+            let includeNumber = document.getElementById('includeNumber').checked;
+            let includeSymbol = document.getElementById('includeSymbol').checked;
+
+            // Define the character sets for generating the password
+            let uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            let numberChars = '0123456789';
+            let symbolChars = '!@#$%^&*()-+';
+
+            // Create a variable to store the possible characters to include in the password
+            let possibleChars = '';
+
+            // Add the selected character sets to the possible characters list
+            if (includeUppercase) {
+                possibleChars += uppercaseChars;
+            }
+
+            if (includeLowercase) {
+                possibleChars += lowercaseChars;
+            }
+
+            if (includeNumber) {
+                possibleChars += numberChars;
+            }
+
+            if (includeSymbol) {
+                possibleChars += symbolChars;
+            }
+
+            // If no character set is selected, show an error message
+            if (possibleChars === '') {
+                document.getElementById('output').innerText = 'Please select at least one character set.';
+                return;
+            }
+
+            // Generate the password
+            let generatedPassword = '';
+            for (let i = 0; i < desiredLength; i++) {
+                const randomIndex = Math.floor(Math.random() * possibleChars.length);
+                generatedPassword += possibleChars[randomIndex];
+            }
+
+            // Perform shuffling on the generated string
+            let shuffledPassword = shuffleString(generatedPassword);
+
+            // Display the shuffled output on the screen
+            document.getElementById('output').innerText = shuffledPassword;
+
+            // Evaluate password strength and update the label
+            const strengthLabel = document.getElementById('strengthLabel');
+            const strength = evaluatePasswordStrength(shuffledPassword);
+            strengthLabel.innerText = "Strength: " + strength.toUpperCase();
+            strengthLabel.style.color = strength === "low" ? "red" : strength === "medium" ? "yellow" : "green";
+        }
+
+        // ... (your existing code) ...
+
+        // Add an event listener to call generatePassword() when the button is clicked
+        document.getElementById('generateButton').addEventListener('click', generatePassword);
+
+        const innerBox = document.getElementById('innerBox');
+        innerBox.addEventListener('click', function(event) {
+            const copySymbol = document.getElementById('copySymbol');
+            if (event.target === copySymbol) {
+                copyToClipboard();
+            }
+        });
+    </script>
+</body>
+</html>
